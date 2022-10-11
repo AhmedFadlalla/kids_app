@@ -4,11 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kids_app/data/question_data.dart';
+
 import 'package:kids_app/layouts/cubit/cubit.dart';
 import 'package:kids_app/layouts/cubit/state.dart';
 import 'package:kids_app/modulus/score_screen.dart';
 import 'package:kids_app/shared/component/components.dart';
+
+import '../question/question_data.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);

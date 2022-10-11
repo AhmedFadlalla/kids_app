@@ -221,8 +221,8 @@ getMainSkillsData(){
 }
 
     List<AudioData>? audioData;
-    void getAudioData(){
-      FirebaseFirestore.instance.collection('audio')
+    Future<void> getAudioData()async{
+     await FirebaseFirestore.instance.collection('audio')
           .snapshots()
           .listen((value) {
 
@@ -234,8 +234,8 @@ getMainSkillsData(){
 
     }
     AudioData? audioData2;
-    void getAudio2Data(){
-      FirebaseFirestore.instance.collection('audio')
+    Future<void> getAudio2Data()async{
+      await FirebaseFirestore.instance.collection('audio')
           .doc('mVZhEVwwODQnfSgBteUk')
           .get()
           .then((value) {
@@ -249,8 +249,8 @@ getMainSkillsData(){
     }
 
     AudioData? audioData3;
-    void getAudio3Data(){
-      FirebaseFirestore.instance.collection('audio')
+  Future<void> getAudio3Data()async{
+      await FirebaseFirestore.instance.collection('audio')
           .doc('uiZNR2yaCCjNIjQ9Zbdq')
           .get()
           .then((value) {
@@ -264,8 +264,8 @@ getMainSkillsData(){
     }
 
     AudioData? clapAudio;
-    void getClapAudioData(){
-      FirebaseFirestore.instance.collection('audio')
+  Future<void> getClapAudioData()async{
+      await FirebaseFirestore.instance.collection('audio')
           .doc('NrGv3aC4pVpjvqAyDQ7X')
           .get()
           .then((value) {

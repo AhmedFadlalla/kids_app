@@ -7,13 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kids_app/data/question_data.dart';
+
 import 'package:kids_app/layouts/cubit/cubit.dart';
 import 'package:kids_app/layouts/cubit/state.dart';
 import 'package:kids_app/modulus/quiz_screen.dart';
 import 'package:kids_app/shared/component/components.dart';
 
 import '../layouts/kids_home_layout.dart';
+import '../question/question_data.dart';
 import '../shared/component/constants.dart';
 import '../shared/styles/colors.dart';
 
