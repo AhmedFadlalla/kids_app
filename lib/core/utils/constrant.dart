@@ -1,23 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-class UserParameter extends Equatable{
-  final int? id;
-  final String email;
-  final String password;
-  final String? name;
-  final String? role;
+class SkillParameter extends Equatable{
 
-   UserParameter({
-      this.id,
-    required this.email,
-    required this.password,
-      this.name,
-     this.role
+  final String skillName;
+  final String? skillName2;
+
+  SkillParameter({
+
+     required this.skillName,
+    this.skillName2
+
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id,email,password,name,role];
+  List<Object?> get props => [skillName];
 
 }
 

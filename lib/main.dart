@@ -3,28 +3,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kids_app/core/services/service_locator.dart';
 
+import 'package:kids_app/presentation/screens/ihome_screen.dart';
 import 'package:kids_app/shared/bloc_observer.dart';
 import 'package:kids_app/shared/component/constants.dart';
-import 'package:kids_app/shared/cubit/cubit.dart';
 import 'package:kids_app/shared/network/endpoints.dart';
 import 'package:kids_app/shared/network/local/cach_helper.dart';
-
-import 'layouts/cubit/cubit.dart';
-import 'layouts/kids_home_layout.dart';
-import 'modulus/first_screen.dart';
-import 'modulus/kid_home_screen.dart';
-
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await CachHelper.init();
-  // if(audioPlay==null){
-  //   CachHelper.saveData(key: audio, value: true);
-  // }
-
+  ServicesLocator().init();
   uId = CachHelper.getData(key: 'id');
   audioPlay=CachHelper.getData(key: audio);
   if (kDebugMode) {
@@ -62,30 +54,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(create:(context)=> KidsCubit()..getMainSkillsData()
-            ..getAudioData()
-            ..getAudio2Data()..getAudio3Data()..getClapAudioData()
-          ),
-          BlocProvider(create: (context)=>appCubit()..changeAudio(fromShared: audioPlay))
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-              backgroundColor:  Color(0xFF252c4a),
-              selectedItemColor: Colors.amber,
-              unselectedItemColor: Colors.cyan,
-
-            )
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor:  Color(0xFF252c4a),
+            selectedItemColor: Colors.amber,
+            unselectedItemColor: Colors.cyan,
 
           ),
-          // home: const FirstScreen(),
-          home: uId!=null ?const KidsHomeScreen():const FirstScreen(),
+        appBarTheme:const AppBarTheme(
+          backgroundColor: Color(0xFF6985e8),
+        )
 
-        ));
+      ),
+      // home: const FirstScreen(),
+      home: const IHomeScreen(),
+
+    );
   }
 }
 
