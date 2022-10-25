@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kids_app/presentation/screens/component/components.dart';
-
+import 'package:lottie/lottie.dart';
 class ContainerDesignScreen extends StatelessWidget {
   final Color color;
   final String text;
   final  Widget widget;
+  final String lottieFile;
   const ContainerDesignScreen({
     Key? key,
     required this.color,
     required this.text,
-    required this.widget
+    required this.widget,
+    required this.lottieFile
 
   }) : super(key: key);
 
@@ -23,22 +25,30 @@ class ContainerDesignScreen extends StatelessWidget {
         margin: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
             color: color,
-            shape: BoxShape.circle
+            borderRadius: BorderRadius.circular(25)
         ),
         height: 200,
-        child: Center(
-          child: Text(
-              text,
-              style: GoogleFonts.mochiyPopOne(
-                textStyle: const TextStyle(
-                    fontSize:35.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontFamily: 'Rama'
+        child: Row(
+          children: [
+            Lottie.asset(
+                lottieFile,
+              width:200,
+              animate: true
+            ),
+            const Spacer(),
+            Text(
+                text,
+                style: GoogleFonts.mochiyPopOne(
+                  textStyle: const TextStyle(
+                      fontSize:35.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily: 'Rama'
 
-                ),
-              )
-          ),
+                  ),
+                )
+            ),
+          ],
         ),
       ),
       onTap:(){

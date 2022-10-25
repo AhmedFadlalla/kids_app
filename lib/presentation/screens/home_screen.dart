@@ -43,6 +43,12 @@ class HomeScreen extends StatelessWidget {
 
   ];
 
+  List<String> lottie=[
+    'assets/lottie/music1.json',
+    'assets/lottie/video.json',
+    'assets/lottie/masrah.json',
+    'assets/lottie/conversation.json',
+  ];
 
 
   @override
@@ -68,6 +74,7 @@ class HomeScreen extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context,index)=>ContainerDesignScreen(
+                    lottieFile: lottie[index],
                       color: colors[index],
                       text: texts[index],
                       widget: [
