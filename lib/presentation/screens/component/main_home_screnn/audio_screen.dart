@@ -7,6 +7,8 @@ import 'package:kids_app/shared/network/endpoints.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../../../../shared/component/constants.dart';
+
 class AudioScreen extends StatefulWidget {
   final String url;
 
@@ -25,6 +27,7 @@ class _AudioScreenState extends State<AudioScreen> {
 
   @override
   void initState() {
+    // mainAudioPlayer.stop();
     super.initState();
      controller=
         YoutubePlayerController(
@@ -75,6 +78,7 @@ class _AudioScreenState extends State<AudioScreen> {
   @override
   void dispose() {
     controller.pause();
+    // mainAudioPlayer.resume();
     super.dispose();
 
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import '../../core/utils/enum.dart';
 import '../../presentation/controller/app_cubit/cubit.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -77,140 +78,162 @@ class _KidsHomeScreenState extends State<IHomeScreen> {
         create: (context)=>sl<HomeBloc>()..add(GetMainSkillDataEvent())..add(GetAudiosDataEvent()),
       child: BlocBuilder<HomeBloc,HomeState>(
           builder: (context,state){
-       return Scaffold(
-          appBar: AppBar(
-            title: const Text(
-                'الصفحة الرئيسيه'
-            ),
-            actions: [
-              TextButton(onPressed: (){
-       showDialog(context: context, builder: (builder){
-         var audios=state.audiosData;
-         return BlocProvider(
-             create: (context)=>appCubit(),
-           child: BlocConsumer<appCubit,AppStates>
-             (builder: (context,state){
-             return AlertDialog(
-               title: Text("الاعدادات"),
-               content: SingleChildScrollView(
-                 child: ListBody(
-                   children: [
-                     Row(
-                       children: [
-                         Expanded(
-                           child: InkWell(
-                             onTap: (){
-                               appCubit.get(context).changeAudio();
-                               audioPlayer.setSourceUrl(audios[2].audio).then((value) {
-                                 audioPlayer.resume();
-                               });
-                             },
-                             child: Container(
-                               decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(25),
-                                   border: Border.all(color: Colors.green),
-                                   color: appCubit.get(context).isPlay?Colors.blue:Colors.white
-                               ),
-                               child: Row(
-                                 children: const [
-                                   Icon(
-                                     Icons.volume_up,
-                                     color: Colors.green,
-                                     size: 35,
-                                   ),
-                                   Text(
-                                     'تشغيل',
-                                     style: TextStyle(
-                                       fontWeight: FontWeight.bold,
-                                       fontSize: 25,
+       switch (state.mainSkillDataState){
 
+         case RequestState.loading:
+           return  Scaffold(
+             body: Container(
+               height: height,
+               decoration: const BoxDecoration(
+
+                   gradient: LinearGradient(
+                       colors: [
+                         Color(0xFF0f17ad),
+                         Color(0xFF6985e8),
+                       ]
+                   )
+
+               ),
+               child: const Center(child: CircularProgressIndicator(),)
+             ),
+           );
+         case RequestState.loaded:
+           return Scaffold(
+             appBar: AppBar(
+               title: const Text(
+                   'الصفحة الرئيسيه'
+               ),
+               actions: [
+                 TextButton(onPressed: (){
+                   showDialog(context: context, builder: (builder){
+                     var audios=state.audiosData;
+                     return BlocProvider(
+                       create: (context)=>appCubit(),
+                       child: BlocConsumer<appCubit,AppStates>
+                         (builder: (context,state){
+                         return AlertDialog(
+                           title: Text("الاعدادات"),
+                           content: SingleChildScrollView(
+                             child: ListBody(
+                               children: [
+                                 Row(
+                                   children: [
+                                     Expanded(
+                                       child: InkWell(
+                                         onTap: (){
+                                           appCubit.get(context).changeAudio();
+                                           audioPlayer.setSourceUrl(audios[2].audio).then((value) {
+                                             audioPlayer.resume();
+                                           });
+                                         },
+                                         child: Container(
+                                           decoration: BoxDecoration(
+                                               borderRadius: BorderRadius.circular(25),
+                                               border: Border.all(color: Colors.green),
+                                               color: appCubit.get(context).isPlay?Colors.blue:Colors.white
+                                           ),
+                                           child: Row(
+                                             children: const [
+                                               Icon(
+                                                 Icons.volume_up,
+                                                 color: Colors.green,
+                                                 size: 35,
+                                               ),
+                                               Text(
+                                                 'تشغيل',
+                                                 style: TextStyle(
+                                                   fontWeight: FontWeight.bold,
+                                                   fontSize: 25,
+
+                                                 ),
+                                               ),
+                                             ],
+                                           ),
+                                         ),
+                                       ),
                                      ),
-                                   ),
-                                 ],
-                               ),
+                                     const  SizedBox(width: 12,),
+                                     Expanded(
+                                       child: InkWell(
+                                         onTap: (){
+                                           appCubit.get(context).changeAudio();
+                                           audioPlayer.pause();
+
+                                         },
+                                         child: Container(
+                                           decoration: BoxDecoration(
+                                               borderRadius: BorderRadius.circular(25),
+                                               border: Border.all(color: Colors.green),
+                                               color: appCubit.get(context).isPlay?Colors.white:Colors.blue
+                                           ),
+
+
+                                           child: Row(
+                                             children: const [
+                                               Icon(
+                                                 Icons.volume_off,
+                                                 color: Colors.red,
+                                                 size: 35,
+                                               ),
+                                               Text(
+                                                 'ايقاف',
+                                                 style: TextStyle(
+                                                   fontWeight: FontWeight.bold,
+                                                   fontSize: 25,
+
+                                                 ),
+                                               ),
+                                             ],
+                                           ),
+                                         ),
+                                       ),
+                                     )
+                                   ],
+                                 )
+                               ],
                              ),
                            ),
-                         ),
-                         const  SizedBox(width: 12,),
-                         Expanded(
-                           child: InkWell(
-                             onTap: (){
-                               appCubit.get(context).changeAudio();
-                                 audioPlayer.pause();
+                         );
+                       }, listener: (context,state){}),
+                     );
+                   });
+                 }, child:const  Icon(
+                   Icons.settings,
+                   color: Colors.white,
+                 ))
+               ],
+             ),
+             body: Container(
+               height: height,
+               decoration: const BoxDecoration(
 
-                             },
-                             child: Container(
-                               decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(25),
-                                   border: Border.all(color: Colors.green),
-                                   color: appCubit.get(context).isPlay?Colors.white:Colors.blue
-                               ),
+                   gradient: LinearGradient(
+                       colors: [
+                         Color(0xFF0f17ad),
+                         Color(0xFF6985e8),
+                       ]
+                   )
 
-
-                               child: Row(
-                                 children: const [
-                                   Icon(
-                                     Icons.volume_off,
-                                     color: Colors.red,
-                                     size: 35,
-                                   ),
-                                   Text(
-                                     'ايقاف',
-                                     style: TextStyle(
-                                       fontWeight: FontWeight.bold,
-                                       fontSize: 25,
-
-                                     ),
-                                   ),
-                                 ],
-                               ),
-                             ),
-                           ),
-                         )
-                       ],
-                     )
-                   ],
+               ),
+               child: Padding(
+                 padding: const EdgeInsets.all(10.0),
+                 child: ListView.separated(
+                   shrinkWrap: true,
+                   physics: const BouncingScrollPhysics(),
+                   itemBuilder: (context,index)=>buildSkillCard(
+                       state.mainSkillData[index],
+                       colors[index]),
+                   separatorBuilder:(context,index)=>const SizedBox(
+                     height: 25,
+                   ) ,
+                   itemCount: state.mainSkillData.length,
                  ),
                ),
-             );
-           }, listener: (context,state){}),
-         );
-       });
-              }, child:const  Icon(
-                  Icons.settings,
-                color: Colors.white,
-              ))
-            ],
-          ),
-
-
-          body: Container(
-            decoration: const BoxDecoration(
-
-                gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF0f17ad),
-                      Color(0xFF6985e8),
-                    ]
-                )
-
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context,index)=>buildSkillCard(
-                    state.mainSkillData[index],
-                    colors[index]),
-                separatorBuilder:(context,index)=>const SizedBox(
-                  height: 25,
-                ) ,
-                itemCount: state.mainSkillData.length,
-              ),
-            ),
-          ),
-        );
+             ),
+           );
+         case RequestState.error:
+           return Center(child: Text(state.mainSkillDataMessage),);
+       }
       }),
     );
   }
@@ -368,7 +391,7 @@ class _KidsHomeScreenState extends State<IHomeScreen> {
               textStyle: const TextStyle(
                   fontSize: 25.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontFamily: 'Rama'
 
               ),
@@ -379,6 +402,7 @@ class _KidsHomeScreenState extends State<IHomeScreen> {
     onTap:(){
       if(model.audio!="null"){
         audioPlayer.setSourceUrl(model.audio).then((value) {
+          mainAudioPlayer.stop();
           audioPlayer.resume();
 
           navigateTo(context,  ISkillsScreen(skillName: model.name,));

@@ -4,8 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kids_app/core/services/service_locator.dart';
+import 'package:kids_app/presentation/controller/app_cubit/cubit.dart';
 
 import 'package:kids_app/presentation/screens/ihome_screen.dart';
+import 'package:kids_app/presentation/screens/start_screen.dart';
 import 'package:kids_app/shared/bloc_observer.dart';
 import 'package:kids_app/shared/component/constants.dart';
 import 'package:kids_app/shared/network/endpoints.dart';
@@ -54,7 +56,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return BlocProvider(create: (context)=>appCubit(),
+    child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -64,14 +67,15 @@ class MyApp extends StatelessWidget {
             unselectedItemColor: Colors.cyan,
 
           ),
-        appBarTheme:const AppBarTheme(
-          backgroundColor: Color(0xFF6985e8),
-        )
+          appBarTheme:const AppBarTheme(
+            backgroundColor: Color(0xFF6985e8),
+          )
 
       ),
       // home: const FirstScreen(),
-      home: const IHomeScreen(),
+      home: const StartScreen(),
 
+    ),
     );
   }
 }

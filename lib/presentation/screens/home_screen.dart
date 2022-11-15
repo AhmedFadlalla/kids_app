@@ -6,6 +6,8 @@ import 'package:kids_app/presentation/screens/component/main_home_screnn/audio_s
 import 'package:video_player/video_player.dart';
 
 import '../../core/services/service_locator.dart';
+import '../../core/utils/enum.dart';
+import '../../shared/component/constants.dart';
 import '../controller/Home/home_event.dart';
 import 'component/container_design.dart';
 import 'component/main_home_screnn/conversation_screen.dart';
@@ -13,7 +15,7 @@ import 'component/main_home_screnn/masrah_screen.dart';
 import 'component/main_home_screnn/show_screen.dart';
 import 'component/main_home_screnn/video_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String videoUrl;
   final String audioUrl;
   final String conversation;
@@ -27,6 +29,11 @@ class HomeScreen extends StatelessWidget {
     required this.masrah,
   }) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   List<Color> colors = [
     Color(0xFFff008B),
     Color(0xFF00e8ff),
@@ -49,6 +56,11 @@ class HomeScreen extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    // mainAudioPlayer.resume();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<HomeBloc>(),
@@ -58,9 +70,9 @@ class HomeScreen extends StatelessWidget {
           body: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [
-              Color(0xFF0f17ad),
-              Color(0xFF6985e8),
-            ])),
+                  Color(0xFF0f17ad),
+                  Color(0xFF6985e8),
+                ])),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: ListView.separated(
@@ -71,18 +83,18 @@ class HomeScreen extends StatelessWidget {
                     color: colors[index],
                     text: texts[index],
                     widget: [
-                      AudioScreen(url: audioUrl),
-                      AudioScreen(url: videoUrl),
+                      AudioScreen(url: widget.audioUrl),
+                      AudioScreen(url: widget.videoUrl),
                       MasrahyaScreen(
                         videoPlayerController: VideoPlayerController
                             .network(
-                            masrah
+                            widget.masrah
                         ),
                       ),
                       MasrahyaScreen(
                         videoPlayerController: VideoPlayerController
                             .network(
-                            conversation
+                            widget.conversation
                         ),
                       ),
                     ][index]),

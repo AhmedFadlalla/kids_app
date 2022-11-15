@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../core/services/service_locator.dart';
+import '../../../../shared/component/constants.dart';
 import '../../../controller/Home/home_bloc.dart';
 import '../../../controller/Home/home_state.dart';
 class MasrahyaScreen extends StatefulWidget {
@@ -88,6 +89,7 @@ class _MasrahyaScreenState extends State<MasrahyaScreen> {
    void dispose() {
      widget.videoPlayerController.pause();
      chewieController!.dispose();
+     // mainAudioPlayer.resume();
      super.dispose();
 
    }

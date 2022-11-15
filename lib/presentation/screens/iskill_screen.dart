@@ -8,6 +8,7 @@ import 'package:kids_app/presentation/controller/Home/home_bloc.dart';
 import 'package:kids_app/presentation/controller/Home/home_state.dart';
 import 'package:xen_popup_card/xen_card.dart';
 
+import '../../core/utils/enum.dart';
 import '../../presentation/controller/app_cubit/cubit.dart';
 import '../../core/services/service_locator.dart';
 import '../../domain/entities/base_skill_data.dart';
@@ -29,6 +30,7 @@ class ISkillsScreen extends StatefulWidget {
 }
 
 class _SkillsScreenState extends State<ISkillsScreen> {
+
 
   List<Color>colors=[
     Color(0xFFff008B),
@@ -54,6 +56,11 @@ class _SkillsScreenState extends State<ISkillsScreen> {
   );
 
   AudioPlayer audioPlayer = AudioPlayer();
+  @override
+  void initState() {
+    // mainAudioPlayer.resume();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,42 +69,65 @@ class _SkillsScreenState extends State<ISkillsScreen> {
         create: (context)=>sl<HomeBloc>()..add(GetSkillDataEvent(skillName: widget.skillName)),
       child: BlocBuilder<HomeBloc,HomeState>(
     builder: (context,state){
-      var skillData=state.skillData;
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('الصفحة الرئيسيه'),
-          actions: [cardWithGutterAndAppBar(context)],
-        ),
 
-        body: Container(
-          height: height,
-          decoration: const BoxDecoration(
+      switch(state.skillDataState){
 
-              gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF0f17ad),
-                    Color(0xFF6985e8),
-                  ]
-              )
+        case RequestState.loading:
+          return Scaffold(
+            body: Container(
+                height: height,
+                decoration: const BoxDecoration(
 
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) => buildSkillCard(
-                  skillData[index],
-                  colors[index],
-                  context),
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 25,
-              ),
-              itemCount: skillData.length,
+                    gradient: LinearGradient(
+                        colors: [
+                          Color(0xFF0f17ad),
+                          Color(0xFF6985e8),
+                        ]
+                    )
+
+                ),
+                child:const Center(child: CircularProgressIndicator(),),)
+            );
+        case RequestState.loaded:
+          var skillData=state.skillData;
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('الصفحة الرئيسيه'),
+              actions: [cardWithGutterAndAppBar(context)],
             ),
-          ),
-        ),
-      );
+
+            body: Container(
+              height: height,
+              decoration: const BoxDecoration(
+
+                  gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF0f17ad),
+                        Color(0xFF6985e8),
+                      ]
+                  )
+
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) => buildSkillCard(
+                      skillData[index],
+                      colors[index],
+                      context),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 25,
+                  ),
+                  itemCount: skillData.length,
+                ),
+              ),
+            ),
+          );
+        case RequestState.error:
+          return Center(child: Text(state.skillDataMessage),);
+      }
     },
     ),
     );
@@ -111,32 +141,33 @@ class _SkillsScreenState extends State<ISkillsScreen> {
               borderRadius: BorderRadius.circular(25),
               color: color),
           height: 200,
-          child: Stack(
-            children: [
-              Positioned(
-                  right: 10,
-                  top: 50,
-                  child: Text(model.name,
-                      style: GoogleFonts.mochiyPopOne(
-                        textStyle: const TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontFamily: 'Rama'),
-                      ))),
-              Positioned(
-                  top: 10,
-                  child: Image(
-                    image: NetworkImage(model.image),
-                    fit: BoxFit.cover,
-                    height: 170,
-                    width: 200,
-                  ))
-            ],
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Row(
+
+              children: [
+                Text(model.name,
+                    style: GoogleFonts.mochiyPopOne(
+                      textStyle: const TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'Rama'),
+                    )),
+                Spacer(),
+                Image(
+                  image: NetworkImage(model.image),
+                  fit: BoxFit.cover,
+                  height: 170,
+                  width: 190,
+                )
+              ],
+            ),
           )),
       onTap: () {
         if (model.skillAudio != "null") {
           audioPlayer.setSourceUrl(model.skillAudio).then((value) {
+            // mainAudioPlayer.stop();
             audioPlayer.resume();
             navigateTo(context,  HomeScreen(
               videoUrl: model.videos,

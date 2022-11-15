@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kids_app/presentation/screens/component/components.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../shared/component/constants.dart';
 class ContainerDesignScreen extends StatelessWidget {
   final Color color;
   final String text;
@@ -52,6 +54,7 @@ class ContainerDesignScreen extends StatelessWidget {
         ),
       ),
       onTap:(){
+        mainAudioPlayer.pause();
         navigateTo(context, widget);
       },
 
